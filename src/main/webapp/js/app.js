@@ -92,16 +92,12 @@ var app = (function  () {
           submarine.el.x = jsonMsg.x;
           submarine.el.y = jsonMsg.y;
           submarine.el.rotation = jsonMsg.rotation;
-          //game.physics.arcade.accelerateToXY(submarine.el, jsonMsg.x, jsonMsg.y, 300);
-          //submarine.el.currentSpeed = 300;
         }
 
         if (jsonMsg.user == ShipsType.Blue && jsonMsg.x) {
           blue.el.x = jsonMsg.x;
           blue.el.y = jsonMsg.y;
           blue.el.rotation = jsonMsg.rotation;
-          //game.physics.arcade.accelerateToXY(blue.el, jsonMsg.x, jsonMsg.y, 300);
-          //blue.el.currentSpeed = 300;
         }
       } catch(err) {
         console.log(err);

@@ -30,6 +30,8 @@ var map = (function  () {
   }
 
   var generateIslands = function() {
+    var islands = [];
+
     caribbean.islands = game.add.group();
 
     // Seteo un valor random con la cantidad de islas
@@ -54,6 +56,13 @@ var map = (function  () {
       island.body.immovable = true;
       island.anchor.setTo(0.5, 0.5);
       caribbean.islands.add(island);
+      
+      islands.push({
+        x: x,
+        y: y,
+        width: width,
+        height: height
+      });
     }
   }
 

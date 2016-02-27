@@ -24,6 +24,12 @@ var webSocket = (function() {
 
   var init = function() {
     connection = new WebSocket("ws://" + ip + ":8080/Mercantes-del-Karibe/wsServerEndpoint");
+    connection.onerror = function(evt) {
+      console.log(evt);
+    };
+    connection.onclose = function(evt) {
+      console.log(evt);
+    };
   };
 
   init();
