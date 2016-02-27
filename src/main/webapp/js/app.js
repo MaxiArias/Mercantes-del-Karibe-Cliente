@@ -54,7 +54,8 @@ var app = (function  () {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // Inicio todo lo relacionado al mapa del juego
-    map.init(game);
+    var admin = getParameterByName("admin");
+    map.init(game, admin);
     
     // Inicio las naves
     ships.init(game);
