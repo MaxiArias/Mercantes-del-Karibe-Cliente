@@ -66,10 +66,10 @@ var app = (function  () {
 
     if (shipType == ShipsType.Submarine) {
       setPlayerShip(submarine);
-      webSocketJs.setUser(ShipsType.Submarine);
+      webSocket.setUser(ShipsType.Submarine);
     } else if (shipType == ShipsType.Blue) {
       setPlayerShip(blue);
-      webSocketJs.setUser(ShipsType.Blue);
+      webSocket.setUser(ShipsType.Blue);
     }
 
     // Seteo la mascara (alcanze de la luz) dependiendo del barco
@@ -84,7 +84,7 @@ var app = (function  () {
     game.input.activePointer.x = ship.x;
     game.input.activePointer.y = ship.y;
     
-    webSocketJs.setOnMessage(function (message) {
+    webSocket.setOnMessage(function (message) {
       try {
         var jsonMsg = JSON.parse(message.data);
 
@@ -118,36 +118,27 @@ var app = (function  () {
     mask.x = ship.el.body.x + 36;
     mask.y = ship.el.body.y + 36;
 
-    game.physics.arcade.collide([ny.land, mvd.land], ship);
+    game.physics.arcade.collide([ny.land, mvd.land], ship.el);
     game.physics.arcade.collide(ship.el, caribbean.islands);
 
     game.physics.arcade.overlap(ny.port, ship.el, function() {
       alert("LLego!");
-      submarine.kill();
+      submarine.el.kill();
       
       // Una vez que muere puede seguir al otro
       //game.camera.follow(ships.blue);
       //mask.destroy();
     });
     
-    game.physics.arcade.collide(blue, submarine, function() {
+    game.physics.arcade.collide(blue.el, submarine.el, function() {
       //red.body.velocity = { x: 0, y: 0 };
       //submarine.body.velocity = { x: 0, y: 0 };
 
       alert("Boom!");
-      blue.kill();
+      blue.el.kill();
     });
-    
-    // Manda la posicion al server
-    // if (submarine.alive && sendToServer) {
-    //   webSocketJs.sendMessage('submarine', submarine.x, submarine.y, submarine.angle);
-    // }
-  
-    // Recibe la posición del oponente y la actualiza
-    //
 
     ship.update(cursors);
-    //blue.update();
 
     // game.physics.arcade.collide(bullet, red, function() {
     //   ships.blue.kill();
