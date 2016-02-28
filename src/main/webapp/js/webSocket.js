@@ -1,21 +1,38 @@
-var webSocketJs = (function() {  
-  var ip = "192.168.1.103";
-  var websocket = new WebSocket("ws://" + ip + ":8080/Mercantes-del-Karibe/wsServerEndpoint");
+var webSocket = (function() {  
+  var ip = "192.168.1.46";
+  var connection;
   var user;
 
-  var sendMessage = function (message) {   
-    websocket.send(JSON.stringify(message));
-  }
+  var sendMessage = function (x, y, rotation) {   
+    var message = {
+      user: user,
+      x: x,
+      y: y,
+      rotation: rotation
+    }
+
+    connection.send(JSON.stringify(message));
+  };
 
   var setUser = function (name) {
     user = name;
+  };
 
-    //websocket.send(JSON.stringify(jsonMsg));
-  }
+  var setOnMessage = function (fn) {
+    connection.onmessage = fn;
+  };
 
-  function setOnMessage(fn) {
-    websocket.onmessage = fn;
-  }
+  var init = function() {
+    connection = new WebSocket("ws://" + ip + ":8080/Mercantes-del-Karibe/wsServerEndpoint");
+    connection.onerror = function(evt) {
+      console.log(evt);
+    };
+    connection.onclose = function(evt) {
+      console.log(evt);
+    };
+  };
+
+  init();
 
   return {
     sendMessage: sendMessage,

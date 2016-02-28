@@ -31,7 +31,9 @@ var map = (function  () {
     caribbean.yBottom = worldBounds.yBottomRight - Math.floor(worldBounds.yBottomRight / 10);
   }
 
-  var generateIslands = function() {
+  var generateIslands = function(_admin) {
+    var islands = [];
+
     caribbean.islands = game.add.group();
 
     // Seteo un valor random con la cantidad de islas
@@ -56,6 +58,21 @@ var map = (function  () {
       island.body.immovable = true;
       island.anchor.setTo(0.5, 0.5);
       caribbean.islands.add(island);
+      
+      islands.push({
+        x: x,
+        y: y,
+        width: width,
+        height: height
+      });
+    }
+
+    if (_admin) {
+      // Para el instalador que todo quede en http://localhost:8080/Mercantes-del-Karibe como base url 
+      // (cliente y servidor) en tonces es mas sencillo el string del post
+      $.post("http://192.168.1.46:8080/Mercantes-del-Karibe/rest/game/saveIslands", islands, function(response) {
+        console.log(response);
+      });
     }
   }
 
@@ -123,7 +140,7 @@ var map = (function  () {
     game.world.mask = mask;
   };
 
-  var init = function (_game, _ship) {
+  var init = function (_game, _admin) {
     game = _game;
 
     game.stage.backgroundColor = '#000000';
@@ -134,7 +151,7 @@ var map = (function  () {
 
     generateSea();
     generateCaribbean();
-    generateIslands();
+    generateIslands(_admin);
     generatePorts();
   };
 

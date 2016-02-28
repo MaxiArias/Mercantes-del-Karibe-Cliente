@@ -71,6 +71,7 @@ module.exports = function (grunt) {
       },
       options: {
         livereload: true,
+        interval: 1000
       }
     }
   });  

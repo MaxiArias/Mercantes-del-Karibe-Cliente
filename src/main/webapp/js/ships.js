@@ -40,7 +40,7 @@ var ships = (function() {
     },
     update: function(cursors) {
       if (this.hasMoved && this.allowSend)  {
-        webSocketJs.sendMessage(this.el.x, this.el.y, this.el.rotation);
+        webSocket.sendMessage(this.el.x, this.el.y, this.el.rotation);
         this.allowSend = false;
       }
 

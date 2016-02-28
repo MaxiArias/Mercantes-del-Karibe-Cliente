@@ -54,7 +54,8 @@ var app = (function  () {
     game.physics.startSystem(Phaser.Physics.ARCADE);
 
     // Inicio todo lo relacionado al mapa del juego
-    map.init(game);
+    var admin = getParameterByName("admin");
+    map.init(game, admin);
     
     // Inicio las naves
     ships.init(game);
@@ -66,10 +67,10 @@ var app = (function  () {
 
     if (shipType == ShipsType.Submarine) {
       setPlayerShip(submarine);
-      webSocketJs.setUser(ShipsType.Submarine);
+      webSocket.setUser(ShipsType.Submarine);
     } else if (shipType == ShipsType.Blue) {
       setPlayerShip(blue);
-      webSocketJs.setUser(ShipsType.Blue);
+      webSocket.setUser(ShipsType.Blue);
     }
 
     // Seteo la mascara (alcanze de la luz) dependiendo del barco
@@ -86,7 +87,7 @@ var app = (function  () {
     game.input.activePointer.x = ship.x;
     game.input.activePointer.y = ship.y;
     
-    webSocketJs.setOnMessage(function (message) {
+    webSocket.setOnMessage(function (message) {
       try {
         var jsonMsg = JSON.parse(message.data);
 
@@ -94,16 +95,12 @@ var app = (function  () {
           submarine.el.x = jsonMsg.x;
           submarine.el.y = jsonMsg.y;
           submarine.el.rotation = jsonMsg.rotation;
-          //game.physics.arcade.accelerateToXY(submarine.el, jsonMsg.x, jsonMsg.y, 300);
-          //submarine.el.currentSpeed = 300;
         }
 
         if (jsonMsg.user == ShipsType.Blue && jsonMsg.x) {
           blue.el.x = jsonMsg.x;
           blue.el.y = jsonMsg.y;
           blue.el.rotation = jsonMsg.rotation;
-          //game.physics.arcade.accelerateToXY(blue.el, jsonMsg.x, jsonMsg.y, 300);
-          //blue.el.currentSpeed = 300;
         }
       } catch(err) {
         console.log(err);
@@ -198,6 +195,7 @@ var app = (function  () {
         alert("AZUL HUNDIDO");
       }
     });
+
 
     // Manda la posicion al server
     // if (submarine.alive && sendToServer) {
