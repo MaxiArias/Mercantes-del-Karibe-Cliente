@@ -1,6 +1,8 @@
 var map = (function  () {
   var ny, mvd, caribbean, sea, mask, game;
 
+  var maskLightOn, maskLightOff;
+
   var worldBounds = { 
     xTopLeft: 0,
     yTopLeft: 0,
@@ -137,6 +139,7 @@ var map = (function  () {
   };
 
   // Selectoras para los objetos
+
 
   var getCaribbean = function() { return caribbean; }
   var getNY = function() { return ny; }
