@@ -1,16 +1,15 @@
 var webSocket = (function() {  
-  var ip = "192.168.1.46";
+  var ip = "192.168.1.103";
   var connection;
   var user;
+  var Methods = {
+    UpdateCoordinates: 'updateCoordinates',
+    BulletShot: 'bulletShot',
+    LightOnOff: 'lightOnOff'
+  }
 
-  var sendMessage = function (x, y, rotation) {   
-    var message = {
-      user: user,
-      x: x,
-      y: y,
-      rotation: rotation
-    }
-
+  var sendMessage = function (message) {
+    message.data.user = user;
     connection.send(JSON.stringify(message));
   };
 

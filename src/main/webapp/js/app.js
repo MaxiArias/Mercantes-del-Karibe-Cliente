@@ -91,17 +91,25 @@ var app = (function  () {
       try {
         var jsonMsg = JSON.parse(message.data);
 
-        if (jsonMsg.user == ShipsType.Submarine && jsonMsg.x) {
-          submarine.el.x = jsonMsg.x;
-          submarine.el.y = jsonMsg.y;
-          submarine.el.rotation = jsonMsg.rotation;
-        }
+        switch(jsonMsg.id) {
+          case 'updateCoordinates':
+            if (jsonMsg.data.user != ship.el.type) {
+              if (jsonMsg.data.user == ShipsType.Submarine) {
+                submarine.el.x = jsonMsg.data.x;
+                submarine.el.y = jsonMsg.data.y;
+                submarine.el.rotation = jsonMsg.data.rotation;
+              }
 
-        if (jsonMsg.user == ShipsType.Blue && jsonMsg.x) {
-          blue.el.x = jsonMsg.x;
-          blue.el.y = jsonMsg.y;
-          blue.el.rotation = jsonMsg.rotation;
+              if (jsonMsg.data.user == ShipsType.Blue) {
+                blue.el.x = jsonMsg.data.x;
+                blue.el.y = jsonMsg.data.y;
+                blue.el.rotation = jsonMsg.data.rotation;
+              }
+            }
+            break;
         }
+      
+        
       } catch(err) {
         console.log(err);
       }   
@@ -154,7 +162,7 @@ var app = (function  () {
 
 
     // Submarino vs azul
-    game.physics.arcade.collide(blue.el, submarine.el, function() {
+    game.physics.arcade.overlap(blue.el, submarine.el, function() {
       //blue.el.kill();
       //submarine.el.kill();
       alert("CHOCAN LOS BARCOS");

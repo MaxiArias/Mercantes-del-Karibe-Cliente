@@ -39,10 +39,6 @@ var ships = (function() {
       }
     },
     update: function(cursors) {
-      if (this.hasMoved && this.allowSend)  {
-        webSocket.sendMessage(this.el.x, this.el.y, this.el.rotation);
-        this.allowSend = false;
-      }
 
       if (cursors) {
         if (cursors.left.isDown)
@@ -74,6 +70,20 @@ var ships = (function() {
           this.el.currentSpeed -= 5;
           this.game.physics.arcade.velocityFromRotation(this.el.rotation, this.el.currentSpeed, this.el.body.velocity);
         }
+      }
+
+      if (this.hasMoved && this.allowSend)  {
+        var message = {
+          id: 'updateCoordinates',
+          data: {
+            x: this.el.x,
+            y: this.el.y,
+            rotation: this.el.rotation
+          }
+          
+        }
+        webSocket.sendMessage(message);
+        this.allowSend = false;
       }
     }
   }
